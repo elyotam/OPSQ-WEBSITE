@@ -96,11 +96,11 @@ const he = {
       },
       {
         tab: "קביעת פגישה",
-        ask: "תקבע פגישה עם דני",
+        ask: "תקבע פגישה עם יותם",
         bot: "כדי לקבוע פגישה, פותחים את היומן ובוחרים שעה פנויה…",
         botOutcome: "הסבר. הפגישה עדיין לא קבועה.",
         opsq: [
-          { text: "מצאתי את דני באנשי הקשר.", tool: "contacts.search" },
+          { text: "מצאתי את יותם באנשי הקשר.", tool: "contacts.search" },
           { text: "בדקתי את היומן: מחר ב-10:00 פנוי.", tool: "calendar.list" },
           { text: "אישרת, וקבעתי.", tool: "calendar.create" },
         ],
@@ -121,7 +121,7 @@ const he = {
       {
         title: "מדברים איתו כמו עם עובד",
         body: "",
-        quotes: ["״תסכם לי את המיילים החשובים.״", "״תקבע פגישה עם דני.״", "״תכין תשובה ללקוח.״"],
+        quotes: ["״תסכם לי את המיילים החשובים.״", "״תקבע פגישה עם יותם.״", "״תכין תשובה ללקוח.״"],
       },
       {
         title: "OpsQ מבצע",
@@ -252,7 +252,7 @@ const he = {
       title: "עובד שחי גם ב-WhatsApp",
       body: "מספר WhatsApp משלו. שומרים אותו כאיש קשר ומדברים איתו כמו עם עובד.",
       chatName: "OpsQ",
-      examples: ["מה יש לי מחר?", "דני שלח את החוזה?", "תזיז את הפגישה ל-16:00."],
+      examples: ["מה יש לי מחר?", "יותם שלח את החוזה?", "תזיז את הפגישה ל-16:00."],
       same: ["אותו סוכן", "אותו זיכרון", "אותו Gmail", "אותו יומן", "אותן הרשאות"],
       flow: ["ה-WhatsApp שלי", "OpsQ", "העסק שלי"],
     },
@@ -484,11 +484,11 @@ const en: Dictionary = {
       },
       {
         tab: "Booking a meeting",
-        ask: "Book a meeting with Danny",
+        ask: "Book a meeting with Yotam",
         bot: "To book a meeting, open your calendar and pick a free slot…",
         botOutcome: "An explanation. No meeting booked.",
         opsq: [
-          { text: "I found Danny in your contacts.", tool: "contacts.search" },
+          { text: "I found Yotam in your contacts.", tool: "contacts.search" },
           { text: "I checked the calendar: tomorrow at 10:00 is free.", tool: "calendar.list" },
           { text: "You approved, and I booked it.", tool: "calendar.create" },
         ],
@@ -509,7 +509,7 @@ const en: Dictionary = {
       {
         title: "Talk to it like an employee",
         body: "",
-        quotes: ["“Summarize the important emails.”", "“Book a meeting with Danny.”", "“Draft a reply to the client.”"],
+        quotes: ["“Summarize the important emails.”", "“Book a meeting with Yotam.”", "“Draft a reply to the client.”"],
       },
       {
         title: "OpsQ executes",
@@ -640,7 +640,7 @@ const en: Dictionary = {
       title: "An employee that lives on WhatsApp too",
       body: "Its own WhatsApp number. Save it as a contact and talk to it like an employee.",
       chatName: "OpsQ",
-      examples: ["What's on tomorrow?", "Did Danny send the contract?", "Move the meeting to 4 PM."],
+      examples: ["What's on tomorrow?", "Did Yotam send the contract?", "Move the meeting to 4 PM."],
       same: ["Same agent", "Same memory", "Same Gmail", "Same calendar", "Same permissions"],
       flow: ["My WhatsApp", "OpsQ", "My business"],
     },
