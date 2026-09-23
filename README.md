@@ -1,3 +1,14 @@
+<p align="center">
+  <a href="https://elyotam.github.io/OPSQ-WEBSITE/">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset=".github/assets/logo-dark.svg">
+      <img src=".github/assets/logo-light.svg" alt="OpsQ" width="300">
+    </picture>
+  </a>
+</p>
+
+<p align="center"><strong><a href="https://elyotam.github.io/OPSQ-WEBSITE/">Open the live site</a></strong></p>
+
 # OpsQ website
 
 The marketing site for OpsQ, a private digital employee for businesses. Hebrew first (RTL), with a full English version.
