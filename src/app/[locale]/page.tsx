@@ -2,13 +2,13 @@ import { notFound } from "next/navigation";
 import { dictionaries, isLocale } from "@/i18n/dictionaries";
 import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/Hero";
+import { CategoryCompare } from "@/components/CategoryCompare";
 import { ExecutionFlow } from "@/components/ExecutionFlow";
 import { Future } from "@/components/Future";
 import { DemoForm } from "@/components/DemoForm";
 import {
   Autonomy,
   Capabilities,
-  Category,
   Control,
   Faq,
   Footer,
@@ -28,7 +28,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       <Nav t={t.nav} locale={locale} />
       <main>
         <Hero t={t.hero} demo={t.demo} status={t.status} />
-        <Category t={t.category} />
+        <CategoryCompare t={t.category} />
         <HowItWorks t={t.how} />
         <ExecutionFlow t={t.flow} />
         <Capabilities t={t.capabilities} status={t.status} />

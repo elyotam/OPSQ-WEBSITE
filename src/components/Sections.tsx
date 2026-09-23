@@ -1,67 +1,10 @@
 import type { Dictionary } from "@/i18n/dictionaries";
 import { Check, Icon } from "./Icon";
-import { Logo, LogoMark } from "./Logo";
+import { Logo } from "./Logo";
 import { Reveal } from "./Reveal";
 import { SectionHeader, StatusBadge } from "./Section";
 
 type StatusLabels = Dictionary["status"];
-
-export function Category({ t }: { t: Dictionary["category"] }) {
-  return (
-    <section className="border-t border-line py-20 sm:py-28">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <Reveal>
-          <SectionHeader eyebrow={t.eyebrow} title={t.titleA} titleB={t.titleB} sub={t.sub} />
-        </Reveal>
-        <div className="mt-12 flex flex-col gap-6">
-          {t.examples.map((ex, i) => (
-            <Reveal key={ex.ask} delay={i * 120} className="rounded-3xl border border-line bg-white/60 p-4 sm:p-6">
-              <div className="flex justify-end">
-                <span className="max-w-[90%] rounded-2xl rounded-se-md bg-ink px-4 py-2.5 text-[0.95rem] font-medium text-paper">
-                  {ex.ask}
-                </span>
-              </div>
-              <div className="mt-5 grid gap-4 md:grid-cols-2">
-                <div className="rounded-2xl bg-night p-5 text-paper">
-                  <div className="flex items-center gap-2 text-sm font-semibold text-mint">
-                    <LogoMark className="h-5 w-5" tile="var(--color-paper)" />
-                    {t.opsq}
-                  </div>
-                  <ul className="mt-4 flex flex-col gap-2">
-                    {ex.opsq.map((line) => (
-                      <li key={line} className="flex items-start gap-2.5 text-[1.02rem]">
-                        <Check className="mt-1 h-4 w-4 shrink-0 text-mint" />
-                        {line}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-5 flex flex-wrap gap-1.5">
-                    {ex.tools.map((tool) => (
-                      <span
-                        key={tool}
-                        className="ltr rounded-md border border-night-line bg-night-2 px-2 py-0.5 font-mono text-[0.7rem] text-paper/70"
-                      >
-                        {tool}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <div className="rounded-2xl border border-dashed border-ink/20 p-5">
-                  <div className="text-sm font-semibold text-ink-mute">{t.bot}</div>
-                  {ex.bot.map((line) => (
-                    <p key={line} className="mt-4 text-[1.02rem] leading-relaxed text-ink-mute">
-                      {line}
-                    </p>
-                  ))}
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
 
 export function HowItWorks({ t }: { t: Dictionary["how"] }) {
   return (

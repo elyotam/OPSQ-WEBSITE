@@ -11,6 +11,8 @@ const STATIC_EXPORT = process.env.NEXT_PUBLIC_STATIC_EXPORT === "1";
 const DEMO_EMAIL = process.env.NEXT_PUBLIC_DEMO_EMAIL ?? "";
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// At least 9 digits, allowing spaces, dashes, brackets and a leading +.
+const PHONE = /^\+?[\d\s\-()]{9,}$/;
 
 export function DemoForm({ t, locale }: { t: Dictionary["form"]; locale: Locale }) {
   const [status, setStatus] = useState<Status>("idle");
@@ -19,7 +21,7 @@ export function DemoForm({ t, locale }: { t: Dictionary["form"]; locale: Locale 
     event.preventDefault();
     const form = event.currentTarget;
     const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
-    if (!data.name?.trim() || !data.business?.trim() || !EMAIL.test(data.email ?? "")) {
+    if (!data.name?.trim() || !EMAIL.test(data.email ?? "") || !PHONE.test(data.phone ?? "")) {
       setStatus("invalid");
       return;
     }
@@ -28,8 +30,8 @@ export function DemoForm({ t, locale }: { t: Dictionary["form"]; locale: Locale 
         setStatus("offline");
         return;
       }
-      const body = [data.name, data.business, data.email, data.phone ?? "", "", data.need ?? ""].join("\n");
-      window.location.href = `mailto:${DEMO_EMAIL}?subject=${encodeURIComponent(`OpsQ demo: ${data.business}`)}&body=${encodeURIComponent(body)}`;
+      const body = [data.name, data.business ?? "", data.email, data.phone, "", data.need ?? ""].join("\n");
+      window.location.href = `mailto:${DEMO_EMAIL}?subject=${encodeURIComponent(`OpsQ demo: ${data.business || data.name}`)}&body=${encodeURIComponent(body)}`;
       setStatus("mailto");
       return;
     }
@@ -69,16 +71,16 @@ export function DemoForm({ t, locale }: { t: Dictionary["form"]; locale: Locale 
                 <input name="name" autoComplete="name" required className={field} />
               </label>
               <label className="block text-sm font-semibold text-ink">
-                {t.business}
-                <input name="business" autoComplete="organization" required className={field} />
+                {t.business} <span className="font-normal text-ink-mute">({t.optional})</span>
+                <input name="business" autoComplete="organization" className={field} />
               </label>
               <label className="block text-sm font-semibold text-ink">
                 {t.email}
                 <input name="email" type="email" autoComplete="email" required dir="ltr" className={field} />
               </label>
               <label className="block text-sm font-semibold text-ink">
-                {t.phone} <span className="font-normal text-ink-mute">({t.optional})</span>
-                <input name="phone" type="tel" autoComplete="tel" dir="ltr" className={field} />
+                {t.phone}
+                <input name="phone" type="tel" autoComplete="tel" required dir="ltr" className={field} />
               </label>
               <label className="block text-sm font-semibold text-ink sm:col-span-2">
                 {t.need} <span className="font-normal text-ink-mute">({t.optional})</span>

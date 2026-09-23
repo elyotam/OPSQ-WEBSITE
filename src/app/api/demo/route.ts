@@ -6,6 +6,7 @@ export const runtime = "nodejs";
 
 const LIMITS = { name: 120, business: 160, email: 200, phone: 40, need: 2000 } as const;
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE = /^\+?[\d\s\-()]{9,}$/;
 
 // Best-effort per-IP limit: 5 requests per 10 minutes per server instance.
 const WINDOW_MS = 10 * 60 * 1000;
@@ -46,7 +47,7 @@ export async function POST(request: NextRequest) {
     need: clean(body.need, LIMITS.need),
     locale: body.locale === "en" ? "en" : "he",
   };
-  if (!lead.name || !lead.business || !EMAIL.test(lead.email)) {
+  if (!lead.name || !EMAIL.test(lead.email) || !PHONE.test(lead.phone)) {
     return NextResponse.json({ error: "invalid" }, { status: 400 });
   }
 
@@ -58,9 +59,9 @@ export async function POST(request: NextRequest) {
 
   const text = [
     `שם: ${lead.name}`,
-    `עסק: ${lead.business}`,
+    `עסק: ${lead.business || "—"}`,
     `אימייל: ${lead.email}`,
-    `טלפון: ${lead.phone || "—"}`,
+    `טלפון: ${lead.phone}`,
     `שפה: ${lead.locale}`,
     "",
     "מה חשוב שהסוכן יעשה:",
@@ -72,7 +73,7 @@ export async function POST(request: NextRequest) {
       from: MAIL_FROM || DEMO_INBOX,
       to: DEMO_INBOX,
       replyTo: lead.email,
-      subject: `בקשת הדגמה חדשה: ${lead.business}`,
+      subject: `בקשת הדגמה חדשה: ${lead.business || lead.name}`,
       text,
     });
   } catch (error) {
