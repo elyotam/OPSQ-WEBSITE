@@ -7,10 +7,13 @@ export function Hero({
   t,
   demo,
   status,
+  oneLine,
 }: {
   t: Dictionary["hero"];
   demo: Dictionary["demo"];
   status: Dictionary["status"];
+  /** Keep each headline sentence on a single line (Hebrew fits; the English sentence is too long). */
+  oneLine: boolean;
 }) {
   return (
     <section className="relative overflow-hidden">
@@ -25,10 +28,16 @@ export function Hero({
             {t.eyebrow}
           </span>
 
-          <h1 className="mt-6 text-[2.1rem] font-extrabold leading-[1.12] tracking-tight text-ink sm:text-[3.1rem] lg:text-[2.9rem] xl:text-[3.25rem]">
-            {t.titleA}
-            <br />
-            <span className="text-mint-deep">{t.titleB}</span>
+          <h1
+            className={`mt-6 font-extrabold leading-[1.12] tracking-tight text-ink ${
+              oneLine
+                ? // Each sentence stays on one line: the size follows the column width (line 1 ≈ 11.5em wide).
+                  "whitespace-nowrap text-[length:min(3.3rem,calc((100vw_-_2rem)/12.2))] sm:text-[length:min(3.3rem,calc((100vw_-_3rem)/12.2))] lg:text-[length:min(2.95rem,calc((100vw_-_6.5rem)*0.535/12.2))]"
+                : "text-balance text-[2.1rem] sm:text-[3rem] lg:text-[2.7rem] xl:text-[3rem]"
+            }`}
+          >
+            <span className="block">{t.titleA}</span>
+            <span className="block text-mint-deep">{t.titleB}</span>
           </h1>
 
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-soft">{t.sub}</p>

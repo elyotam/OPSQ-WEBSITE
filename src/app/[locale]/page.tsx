@@ -27,7 +27,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
     <>
       <Nav t={t.nav} locale={locale} />
       <main>
-        <Hero t={t.hero} demo={t.demo} status={t.status} />
+        <Hero t={t.hero} demo={t.demo} status={t.status} oneLine={locale === "he"} />
         <CategoryCompare t={t.category} />
         <HowItWorks t={t.how} />
         <ExecutionFlow t={t.flow} />
