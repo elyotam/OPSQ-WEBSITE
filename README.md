@@ -37,7 +37,7 @@ Without them the form reports an error instead of pretending it sent.
 
 `.github/workflows/pages.yml` publishes a static copy on every push to `main`.
 
-A static export can't run server code, so the workflow first removes the API route, the middleware and the internal `/variants` brand pages. The site's root then redirects to `/he`.
+A static export can't run server code, so the workflow first removes the API route, the middleware and the internal `/variants` brand pages. The site's root serves the Hebrew page directly.
 
 In the static copy, the form opens the visitor's email app, addressed to the repository variable `DEMO_EMAIL`. When that variable isn't set, the form says it isn't connected yet.
 
