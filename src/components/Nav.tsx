@@ -23,7 +23,11 @@ export function Nav({ t, locale }: { t: Dictionary["nav"]; locale: Locale }) {
         <ul className="hidden items-center gap-7 text-[0.95rem] text-ink-soft lg:flex">
           {links.map((l) => (
             <li key={l.href}>
-              <a href={l.href} className="transition-colors hover:text-ink">
+              {/* Mint underline grows from the centre on hover and keyboard focus. */}
+              <a
+                href={l.href}
+                className="relative py-1 transition-colors after:absolute after:inset-x-0 after:-bottom-0.5 after:h-[3px] after:origin-center after:scale-x-0 after:rounded-full after:bg-mint after:transition-transform after:duration-300 after:ease-out hover:text-ink hover:after:scale-x-100 focus-visible:after:scale-x-100 motion-reduce:after:transition-none"
+              >
                 {l.label}
               </a>
             </li>
