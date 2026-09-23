@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Dictionary } from "@/i18n/dictionaries";
+import { prefersReducedMotion } from "@/lib/a11y";
 import { Check, Icon } from "./Icon";
 import { LogoMark } from "./Logo";
 import { Reveal } from "./Reveal";
@@ -35,7 +36,7 @@ export function CategoryCompare({ t }: { t: Dictionary["category"] }) {
   // Play the OpsQ side, restarting whenever the tab changes.
   useEffect(() => {
     if (!inView) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (prefersReducedMotion()) {
       setShown(total);
       return;
     }

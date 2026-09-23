@@ -1,0 +1,365 @@
+/* ============================================================
+   Accessibility widget (a11y-*). Everything is opt-in: feature
+   rules apply only while their class is on <html>.
+   ============================================================ */
+
+/* ---------- Widget UI (px sizes so text scaling can't blow up the panel) ---------- */
+.a11y-root {
+  font-family: var(--font-noto), system-ui, sans-serif;
+}
+.a11y-trigger {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 2147483000;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 9999px;
+  border: 2px solid #2dd4bf;
+  background: #1c1917;
+  color: #fff;
+  box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+}
+.a11y-trigger:hover {
+  background: #34302c;
+}
+.a11y-icon {
+  width: 24px;
+  height: 28px;
+}
+.a11y-root button:focus-visible,
+.a11y-root a:focus-visible {
+  outline: 3px solid #0f766e;
+  outline-offset: 2px;
+}
+.a11y-panel {
+  position: fixed;
+  bottom: 88px;
+  right: 20px;
+  z-index: 2147483001;
+  width: min(380px, calc(100vw - 24px));
+  max-height: min(640px, calc(100vh - 110px));
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 16px;
+  border: 1px solid #e2e0de;
+  border-radius: 20px;
+  background: #fff;
+  color: #1c1917;
+  font-size: 15px;
+  line-height: 1.5;
+  box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.35);
+}
+.a11y-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.a11y-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+}
+.a11y-close {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 9999px;
+  background: #f5f5f4;
+  color: #1c1917;
+  cursor: pointer;
+}
+.a11y-close svg {
+  width: 18px;
+  height: 18px;
+}
+.a11y-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+  padding: 12px;
+  border: 1px solid #e2e0de;
+  border-radius: 14px;
+}
+.a11y-row-col {
+  flex-direction: column;
+  align-items: stretch;
+}
+.a11y-label {
+  font-weight: 700;
+}
+.a11y-stepper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.a11y-stepper button {
+  min-width: 48px;
+  height: 44px;
+  border: 1px solid #d6d3d1;
+  border-radius: 12px;
+  background: #fff;
+  color: #1c1917;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.a11y-stepper button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.a11y-value {
+  min-width: 48px;
+  text-align: center;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.a11y-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.a11y-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 52px;
+  padding: 10px 12px;
+  border: 1px solid #e2e0de;
+  border-radius: 14px;
+  background: #fafaf9;
+  color: #1c1917;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: start;
+  cursor: pointer;
+}
+.a11y-toggle[aria-pressed="true"] {
+  border-color: #0f766e;
+  background: #ccfbf1;
+  color: #042f2e;
+}
+.a11y-switch {
+  position: relative;
+  flex-shrink: 0;
+  width: 34px;
+  height: 20px;
+  border-radius: 9999px;
+  background: #d6d3d1;
+  transition: background 0.2s;
+}
+.a11y-switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  inset-inline-start: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 9999px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  transition: inset-inline-start 0.2s;
+}
+[aria-pressed="true"] > .a11y-switch {
+  background: #0f766e;
+}
+[aria-pressed="true"] > .a11y-switch::after {
+  inset-inline-start: 16px;
+}
+.a11y-segment {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-top: 8px;
+}
+.a11y-segment button {
+  min-height: 44px;
+  border: 1px solid #e2e0de;
+  border-radius: 12px;
+  background: #fafaf9;
+  color: #1c1917;
+  font-weight: 600;
+  cursor: pointer;
+}
+.a11y-segment button[aria-pressed="true"] {
+  border-color: #1c1917;
+  background: #1c1917;
+  color: #fff;
+}
+.a11y-reset {
+  width: 100%;
+  min-height: 48px;
+  margin-bottom: 14px;
+  border: 1px solid #1c1917;
+  border-radius: 14px;
+  background: #fff;
+  color: #1c1917;
+  font-weight: 700;
+  cursor: pointer;
+}
+.a11y-statement {
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #f5f5f4;
+  color: #44403c;
+  font-size: 13px;
+}
+.a11y-statement h3 {
+  margin: 0 0 6px;
+  color: #1c1917;
+  font-size: 15px;
+  font-weight: 800;
+}
+.a11y-statement p {
+  margin: 0 0 6px;
+}
+.a11y-statement ul {
+  margin: 0 0 6px;
+  padding-inline-start: 18px;
+  list-style: disc;
+}
+.a11y-statement a {
+  color: #0f766e;
+  text-decoration: underline;
+}
+.a11y-updated {
+  color: #78716c;
+}
+.a11y-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.a11y-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 2147482999;
+  pointer-events: none;
+}
+.a11y-mask > div {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+.a11y-mask > div:first-child {
+  top: 0;
+}
+.a11y-mask > div:last-child {
+  bottom: 0;
+}
+@media (max-width: 480px) {
+  .a11y-trigger {
+    right: 12px;
+    bottom: 12px;
+  }
+  .a11y-panel {
+    right: 12px;
+    bottom: 80px;
+    max-height: calc(100vh - 100px);
+  }
+}
+
+/* ---------- Features ---------- */
+html.a11y-fs-1 {
+  font-size: 110%;
+}
+html.a11y-fs-2 {
+  font-size: 120%;
+}
+html.a11y-fs-3 {
+  font-size: 130%;
+}
+
+html.a11y-spacing body :is(p, li, a, span, label, button, summary, dd, dt, h1, h2, h3, h4, h5, h6):not(.a11y-root, .a11y-root *) {
+  letter-spacing: 0.05em !important;
+  word-spacing: 0.12em !important;
+  line-height: 1.8 !important;
+}
+/* Wider spacing needs room: let the one-line hero headline wrap. */
+html.a11y-spacing h1 span {
+  white-space: normal !important;
+}
+
+html.a11y-contrast {
+  --a11y-f-contrast: contrast(1.5);
+}
+html.a11y-invert {
+  --a11y-f-invert: invert(1) hue-rotate(180deg);
+}
+html.a11y-gray {
+  --a11y-f-gray: grayscale(1);
+}
+/* Filters go on the page's top-level blocks, not on <html>, so the widget and fixed layers stay intact. */
+html.a11y-filter body > :not(.a11y-root) {
+  filter: var(--a11y-f-contrast,) var(--a11y-f-invert,) var(--a11y-f-gray,);
+}
+
+html.a11y-links a:not(.a11y-root *) {
+  text-decoration: underline !important;
+  text-decoration-thickness: 2px !important;
+  text-underline-offset: 3px !important;
+  outline: 2px solid #f59e0b !important;
+  outline-offset: 2px !important;
+}
+
+html.a11y-headings :is(h1, h2, h3, h4, h5, h6):not(.a11y-root *) {
+  outline: 2px dashed #0f766e !important;
+  outline-offset: 6px !important;
+  background-color: rgba(45, 212, 191, 0.1) !important;
+  border-radius: 8px;
+}
+
+html.a11y-readable body :not(.a11y-root *):not(code, pre, .font-mono) {
+  font-family: Arial, "Segoe UI", Tahoma, Helvetica, sans-serif !important;
+}
+
+html.a11y-cursor,
+html.a11y-cursor * {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 24 24'%3E%3Cpath d='M4 2l15 9.5-6.5 1.3L9.5 20z' fill='white' stroke='black' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E")
+      8 4,
+    auto !important;
+}
+html.a11y-cursor-dark,
+html.a11y-cursor-dark * {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 24 24'%3E%3Cpath d='M4 2l15 9.5-6.5 1.3L9.5 20z' fill='black' stroke='%23facc15' stroke-width='1.8' stroke-linejoin='round'/%3E%3C/svg%3E")
+      8 4,
+    auto !important;
+}
+
+html.a11y-no-motion,
+html.a11y-no-motion *,
+html.a11y-no-motion *::before,
+html.a11y-no-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  animation-delay: 0s !important;
+  transition-duration: 0.001ms !important;
+  transition-delay: 0s !important;
+  scroll-behavior: auto !important;
+}
+html.a11y-no-motion .reveal {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+html.a11y-targets :is(button, summary, [role="tab"], select, input:not([type="hidden"])):not(.a11y-root *) {
+  min-height: 44px;
+}
+html.a11y-targets a:not(.a11y-root *) {
+  padding-block: 0.3em;
+}

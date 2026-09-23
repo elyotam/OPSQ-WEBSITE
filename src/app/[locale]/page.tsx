@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
-import { dictionaries, isLocale } from "@/i18n/dictionaries";
+import { dictionaries, dir, isLocale } from "@/i18n/dictionaries";
+import { AccessibilityWidget } from "@/components/AccessibilityWidget";
 import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/Hero";
 import { CategoryCompare } from "@/components/CategoryCompare";
@@ -42,6 +43,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         <Faq t={t.faq} />
       </main>
       <Footer t={t.footer} />
+      <AccessibilityWidget t={t.a11y} dir={dir[locale]} />
     </>
   );
 }

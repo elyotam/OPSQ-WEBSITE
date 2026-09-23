@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Dictionary } from "@/i18n/dictionaries";
+import { prefersReducedMotion } from "@/lib/a11y";
 import { Check } from "./Icon";
 import { SectionHeader } from "./Section";
 
@@ -16,7 +17,7 @@ export function ExecutionFlow({ t }: { t: Dictionary["flow"] }) {
     const el = ref.current;
     if (!el) return;
     const total = t.steps.length;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+    if (prefersReducedMotion() || !("IntersectionObserver" in window)) {
       setActive(total - 1);
       return;
     }

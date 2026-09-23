@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Dictionary } from "@/i18n/dictionaries";
+import { A11Y_EVENT, prefersReducedMotion } from "@/lib/a11y";
 import { Icon } from "./Icon";
 import { LogoMark } from "./Logo";
 
@@ -48,7 +49,7 @@ export function AgentDemo({ t }: { t: Dictionary["demo"] }) {
 
   // Drive the timeline.
   useEffect(() => {
-    if (step === 0 && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (step === 0 && prefersReducedMotion()) {
       reduced.current = true;
       setStep(LAST);
       return;
@@ -57,6 +58,22 @@ export function AgentDemo({ t }: { t: Dictionary["demo"] }) {
     const timer = setTimeout(() => setStep((s) => (s >= LAST ? 0 : s + 1)), TIMELINE[step]);
     return () => clearTimeout(timer);
   }, [step]);
+
+  // Stop or resume when the visitor toggles "stop animations" in the accessibility menu.
+  useEffect(() => {
+    const onChange = () => {
+      const still = prefersReducedMotion();
+      if (still && !reduced.current) {
+        reduced.current = true;
+        setStep(LAST);
+      } else if (!still && reduced.current) {
+        reduced.current = false;
+        setStep(0);
+      }
+    };
+    window.addEventListener(A11Y_EVENT, onChange);
+    return () => window.removeEventListener(A11Y_EVENT, onChange);
+  }, []);
 
   // A stopwatch that runs while the task is in progress.
   const running = step >= 1 && step <= 9;
