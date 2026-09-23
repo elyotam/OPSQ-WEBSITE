@@ -4,11 +4,11 @@
     <meta charset="utf-8" />
     <title>OpsQ</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Static hosting has no middleware: pick the language here. Hebrew unless the browser prefers English. -->
+    <!-- Static hosting has no middleware. The site always opens in Hebrew; English is one click away (EN). -->
     <script>
-      location.replace(/^en\b/i.test(navigator.language || "") ? "en/" : "he/");
+      location.replace("he/");
     </script>
-    <meta http-equiv="refresh" content="1; url=he/" />
+    <meta http-equiv="refresh" content="0; url=he/" />
   </head>
   <body>
     <a href="he/">OpsQ</a>

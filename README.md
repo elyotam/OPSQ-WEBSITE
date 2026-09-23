@@ -11,7 +11,7 @@ npm install
 npx next dev -p 3100
 ```
 
-Then open http://localhost:3100. The root redirects to `/he` or `/en`.
+Then open http://localhost:3100. The root always redirects to `/he`; English is at `/en`.
 
 ## The demo form
 
@@ -26,7 +26,7 @@ Without them the form reports an error instead of pretending it sent.
 
 `.github/workflows/pages.yml` publishes a static copy on every push to `main`.
 
-A static export can't run server code, so the workflow first removes the API route, the middleware and the internal `/variants` brand pages. The site's root then picks the language in the browser.
+A static export can't run server code, so the workflow first removes the API route, the middleware and the internal `/variants` brand pages. The site's root then redirects to `/he`.
 
 In the static copy, the form opens the visitor's email app, addressed to the repository variable `DEMO_EMAIL`. When that variable isn't set, the form says it isn't connected yet.
 
