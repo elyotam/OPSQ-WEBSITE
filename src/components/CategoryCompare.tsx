@@ -120,10 +120,10 @@ export function CategoryCompare({ t }: { t: Dictionary["category"] }) {
                           }`}
                         >
                           {running && <span className="absolute inset-[-3px] animate-spin rounded-full border-2 border-transparent border-t-mint" />}
-                          {on ? <Check className="h-3.5 w-3.5" /> : <span className="text-[0.7rem]">{i + 1}</span>}
+                          {on ? <Check className="h-3.5 w-3.5" /> : <span className="text-[0.72rem]">{i + 1}</span>}
                         </span>
                         <span className="flex-1 text-[1.02rem]">{line.text}</span>
-                        <span className="ltr hidden shrink-0 rounded-md border border-night-line bg-night-2 px-2 py-0.5 font-mono text-[0.68rem] text-paper/55 sm:inline">
+                        <span className="ltr hidden shrink-0 rounded-md border border-night-line bg-night-2 px-2 py-0.5 font-mono text-[0.72rem] text-paper/55 sm:inline">
                           {line.tool}
                         </span>
                       </li>

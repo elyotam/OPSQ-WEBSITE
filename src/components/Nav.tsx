@@ -26,6 +26,8 @@ export function Nav({ t, locale }: { t: Dictionary["nav"]; locale: Locale }) {
               {/* Mint underline grows from the centre on hover and keyboard focus. */}
               <a
                 href={l.href}
+                data-track={l.href === "#how" ? "how_it_works_clicked" : undefined}
+                data-track-location="nav"
                 className="relative py-1 transition-colors after:absolute after:inset-x-0 after:-bottom-0.5 after:h-[3px] after:origin-center after:scale-x-0 after:rounded-full after:bg-mint after:transition-transform after:duration-300 after:ease-out hover:text-ink hover:after:scale-x-100 focus-visible:after:scale-x-100 motion-reduce:after:transition-none"
               >
                 {l.label}
@@ -45,6 +47,8 @@ export function Nav({ t, locale }: { t: Dictionary["nav"]; locale: Locale }) {
           </Link>
           <a
             href="#demo"
+            data-track="demo_cta_clicked"
+            data-track-location="nav"
             className="rounded-full bg-ink px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-night-3"
           >
             {t.cta}

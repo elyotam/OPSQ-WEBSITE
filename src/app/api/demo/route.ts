@@ -46,6 +46,9 @@ export async function POST(request: NextRequest) {
     phone: clean(body.phone, LIMITS.phone),
     need: clean(body.need, LIMITS.need),
     locale: body.locale === "en" ? "en" : "he",
+    utmSource: clean(body.utm_source, 100),
+    utmMedium: clean(body.utm_medium, 100),
+    utmCampaign: clean(body.utm_campaign, 100),
   };
   if (!lead.name || !EMAIL.test(lead.email) || !PHONE.test(lead.phone)) {
     return NextResponse.json({ error: "invalid" }, { status: 400 });
@@ -63,8 +66,9 @@ export async function POST(request: NextRequest) {
     `אימייל: ${lead.email}`,
     `טלפון: ${lead.phone}`,
     `שפה: ${lead.locale}`,
+    `מקור: ${[lead.utmSource, lead.utmMedium, lead.utmCampaign].filter(Boolean).join(" / ") || "—"}`,
     "",
-    "מה חשוב שהסוכן יעשה:",
+    "איזו עבודה היית רוצה להעביר ל-OpsQ:",
     lead.need || "—",
   ].join("\n");
 

@@ -1,58 +1,63 @@
 import type { Dictionary } from "@/i18n/dictionaries";
-import { Check, Icon } from "./Icon";
+import { FlowArrow, Icon } from "./Icon";
 import { Logo } from "./Logo";
 import { Reveal } from "./Reveal";
 import { SectionHeader, StatusBadge } from "./Section";
 
 type StatusLabels = Dictionary["status"];
 
-export function HowItWorks({ t }: { t: Dictionary["how"] }) {
+const ctaClass =
+  "inline-flex items-center justify-center rounded-full bg-mint px-7 py-3.5 text-base font-bold text-mint-ink shadow-[0_10px_30px_-10px_rgba(20,184,166,0.8)] transition-all hover:-translate-y-0.5 hover:bg-[#5eead4]";
+
+/** Why care: the small jobs that eat the day. Restrained, no drama. */
+export function Pain({ t }: { t: Dictionary["pain"] }) {
   return (
-    <section id="how" className="bg-paper-2/60 py-20 sm:py-28">
+    <section className="bg-paper-2/60 py-16 sm:py-24">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
-          <SectionHeader eyebrow={t.eyebrow} title={t.titleA} titleB={t.titleB} />
+          <h2 className="max-w-3xl text-[1.75rem] font-extrabold leading-[1.2] tracking-tight text-ink sm:text-[2.4rem]">{t.title}</h2>
         </Reveal>
-        <ol className="mt-12 grid gap-5 md:grid-cols-3">
-          {t.steps.map((step, i) => (
-            <Reveal as="li" key={step.title} delay={i * 120} className="rounded-3xl border border-line bg-paper p-7">
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-ink text-lg font-extrabold text-mint">
-                {i + 1}
-              </span>
-              <h3 className="mt-5 text-xl font-bold text-ink">{step.title}</h3>
-              {step.body && <p className="mt-2 leading-relaxed text-ink-soft">{step.body}</p>}
-              {step.quotes.length > 0 && (
-                <div className="mt-3 flex flex-col items-end gap-2">
-                  {step.quotes.map((q) => (
-                    <span key={q} className="rounded-2xl rounded-se-md bg-mint-soft px-3.5 py-1.5 text-[0.95rem] text-mint-ink">
-                      {q}
-                    </span>
-                  ))}
-                </div>
-              )}
+        <ul className="mt-10 grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
+          {t.items.map((item, i) => (
+            <Reveal
+              as="li"
+              key={item}
+              delay={(i % 4) * 60}
+              className="flex items-center gap-3 rounded-2xl border border-line bg-paper px-4 py-3.5 text-[0.98rem] text-ink-soft"
+            >
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-ink/25" aria-hidden="true" />
+              {item}
             </Reveal>
           ))}
-        </ol>
+        </ul>
+        <Reveal>
+          <p className="mt-8 flex items-center gap-2 text-xl font-extrabold text-ink sm:text-2xl">
+            <span className="h-6 w-1.5 rounded-full bg-mint" aria-hidden="true" />
+            {t.close}
+          </p>
+        </Reveal>
       </div>
     </section>
   );
 }
 
 export function Capabilities({ t, status }: { t: Dictionary["capabilities"]; status: StatusLabels }) {
+  // 3 + 2 layout on large screens: the first three span 2 of 6 columns, the last two span 3.
+  const span = ["lg:col-span-2", "lg:col-span-2", "lg:col-span-2", "lg:col-span-3", "lg:col-span-3"];
   return (
     <section id="today" className="py-20 sm:py-28">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
           <SectionHeader eyebrow={t.eyebrow} title={t.title} sub={t.sub} />
         </Reveal>
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
           {t.items.map((item, i) => {
             const feature = i === t.items.length - 1;
             return (
               <Reveal
                 key={item.title}
-                delay={(i % 4) * 80}
-                className={`flex flex-col rounded-2xl p-6 ${
+                delay={(i % 3) * 80}
+                className={`flex flex-col rounded-2xl p-6 ${span[i] ?? ""} ${
                   feature ? "bg-night text-paper sm:col-span-2" : "border border-line bg-white/70"
                 }`}
               >
@@ -66,8 +71,8 @@ export function Capabilities({ t, status }: { t: Dictionary["capabilities"]; sta
                   </span>
                   <StatusBadge status="live" labels={status} dark={feature} />
                 </div>
-                <h3 className={`mt-4 text-lg font-bold ${feature ? "text-paper" : "text-ink"}`}>{item.title}</h3>
-                <p className={`mt-1.5 leading-relaxed ${feature ? "text-paper/70" : "text-ink-soft"}`}>{item.body}</p>
+                <h3 className={`mt-4 text-xl font-bold ${feature ? "text-paper" : "text-ink"}`}>{item.title}</h3>
+                <p className={`mt-1.5 leading-relaxed ${feature ? "text-paper/75" : "text-ink-soft"}`}>{item.body}</p>
               </Reveal>
             );
           })}
@@ -77,176 +82,129 @@ export function Capabilities({ t, status }: { t: Dictionary["capabilities"]; sta
   );
 }
 
-export function UseCases({ t, status }: { t: Dictionary["useCases"]; status: StatusLabels }) {
+export function Icp({ t }: { t: Dictionary["icp"] }) {
   return (
     <section className="bg-paper-2/60 py-20 sm:py-28">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
-          <SectionHeader eyebrow={t.eyebrow} title={t.title} sub={t.sub} />
+          <SectionHeader eyebrow={t.eyebrow} title={t.title} />
         </Reveal>
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {t.groups.map((g, i) => (
-            <Reveal key={g.title} delay={i * 80} className="rounded-2xl border border-line bg-paper p-5">
-              <h3 className="text-lg font-bold text-ink">{g.title}</h3>
-              <ul className="mt-4 flex flex-col gap-2.5">
-                {g.items.map((item) => (
-                  <li key={item.text} className="flex items-center justify-between gap-2 text-[0.95rem]">
-                    <span className={`flex items-center gap-2 ${item.status === "live" ? "text-ink" : "text-ink-mute"}`}>
-                      {item.status === "live" ? (
-                        <Check className="h-4 w-4 shrink-0 text-mint-deep" />
-                      ) : (
-                        <span className="h-4 w-4 shrink-0" aria-hidden="true" />
-                      )}
-                      {item.text}
-                    </span>
-                    {item.status !== "live" && <StatusBadge status={item.status} labels={status} />}
-                  </li>
-                ))}
-              </ul>
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {t.items.map((item, i) => (
+            <Reveal key={item.title} delay={i * 80} className="flex flex-col rounded-2xl border border-line bg-paper p-6">
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-ink text-mint">
+                <Icon name={item.icon} className="h-5 w-5" />
+              </span>
+              <h3 className="mt-4 text-lg font-bold text-ink">{item.title}</h3>
+              <p className="mt-0.5 text-sm text-ink-mute">{item.who}</p>
+              <div className="mt-4 flex flex-1 flex-col gap-3 border-t border-line pt-4 text-[0.95rem]">
+                <p>
+                  <span className="block text-xs font-semibold text-ink-mute">{t.problemLabel}</span>
+                  <span className="text-ink">{item.problem}</span>
+                </p>
+                <p className="mt-auto rounded-xl bg-mint-soft px-3 py-2.5">
+                  <span className="block text-xs font-semibold text-mint-ink/70">{t.solveLabel}</span>
+                  <span className="font-semibold text-mint-ink">{item.solve}</span>
+                </p>
+              </div>
             </Reveal>
           ))}
         </div>
-      </div>
-    </section>
-  );
-}
 
-export function Autonomy({ t, status }: { t: Dictionary["autonomy"]; status: StatusLabels }) {
-  return (
-    <section className="py-20 sm:py-28">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <Reveal>
-          <SectionHeader eyebrow={t.eyebrow} title={t.title} sub={t.sub} />
+        <Reveal className="mt-8 flex flex-col items-start gap-4 rounded-3xl bg-night p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+          <p className="text-xl font-extrabold text-paper sm:text-2xl">{t.ctaTitle}</p>
+          <a href="#demo" data-track="demo_cta_clicked" data-track-location="icp" className={ctaClass}>
+            {t.cta}
+          </a>
         </Reveal>
-        <ol className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {t.levels.map((level, i) => {
-            const isDefault = i === 1;
-            return (
-              <Reveal
-                as="li"
-                key={level.name}
-                delay={i * 100}
-                className={`flex flex-col rounded-2xl p-6 ${
-                  isDefault ? "border-2 border-mint-deep bg-white" : "border border-line bg-white/60"
-                }`}
-              >
-                <div className="flex items-center justify-between gap-2">
-                  <div className="flex gap-1" aria-hidden="true">
-                    {[0, 1, 2, 3].map((bar) => (
-                      <span
-                        key={bar}
-                        className={`h-2 w-6 rounded-full ${bar <= i ? (level.status === "live" ? "bg-mint-deep" : "bg-ink/40") : "bg-line"}`}
-                      />
-                    ))}
-                  </div>
-                  <StatusBadge status={level.status} labels={status} />
-                </div>
-                <p className="mt-5 text-sm font-semibold text-ink-mute">{i + 1}</p>
-                <h3 className="text-xl font-bold text-ink">{level.name}</h3>
-                <p className="mt-2 leading-relaxed text-ink-soft">{level.body}</p>
-              </Reveal>
-            );
-          })}
-        </ol>
       </div>
     </section>
   );
 }
 
-const CONTROL_ICONS = ["check", "shield", "list", "team", "unplug", "eyeOff"];
-
-export function Control({ t }: { t: Dictionary["control"] }) {
-  const stateStyle: Record<string, string> = {
-    allow: "bg-paper/10 text-paper/80",
-    confirm: "bg-mint text-mint-ink",
-    deny: "bg-red-500/20 text-red-200",
-  };
+export function Control({ t, status }: { t: Dictionary["control"]; status: StatusLabels }) {
   return (
     <section id="control" className="bg-night py-20 text-paper sm:py-28">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
-          <SectionHeader eyebrow={t.eyebrow} title={t.titleA} titleB={t.titleB} sub={t.sub} dark />
+          <SectionHeader eyebrow={t.eyebrow} title={t.titleA} titleB={t.titleB} dark />
         </Reveal>
-        <div className="mt-12 grid items-start gap-10 lg:grid-cols-[1.45fr_1fr]">
-          <ul className="grid gap-4 sm:grid-cols-2">
-            {t.points.map((p, i) => (
-              <Reveal as="li" key={p.title} delay={(i % 2) * 100} className="rounded-2xl border border-night-line bg-night-2/60 p-5">
-                <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-mint/15 text-mint">
-                  <Icon name={CONTROL_ICONS[i] ?? "check"} className="h-5 w-5" />
-                </span>
-                <h3 className="mt-4 font-bold text-paper">{p.title}</h3>
-                <p className="mt-1.5 text-[0.95rem] leading-relaxed text-paper/70">{p.body}</p>
-              </Reveal>
-            ))}
-          </ul>
 
-          <Reveal className="rounded-3xl border border-night-line bg-night-2 p-5 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8)] sm:p-6 lg:sticky lg:top-24">
-            <div className="flex items-center justify-between border-b border-night-line pb-4">
-              <span className="font-semibold">{t.panelTitle}</span>
-              <span className="h-2 w-2 rounded-full bg-mint" aria-hidden="true" />
-            </div>
-            <ul className="divide-y divide-night-line">
-              {t.panelRows.map((row) => (
-                <li key={row.tool} className="flex items-center justify-between gap-3 py-3.5">
-                  <div className="min-w-0">
-                    <div className="text-[0.95rem] text-paper">{row.label}</div>
-                    <div className="ltr truncate font-mono text-xs text-paper/45">{row.tool}</div>
+        {/* Autonomy: four levels on one line. */}
+        <Reveal className="mt-10 rounded-3xl border border-night-line bg-night-2/60 p-5 sm:p-6">
+          <p className="font-bold text-paper">{t.autonomyTitle}</p>
+          <ol className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+            {t.levels.map((level, i) => {
+              const isDefault = i === 1;
+              return (
+                <li
+                  key={level.name}
+                  className={`relative flex flex-col gap-2 rounded-2xl p-4 ${
+                    isDefault ? "bg-mint text-mint-ink" : "border border-night-line text-paper"
+                  }`}
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <span className={`text-sm font-extrabold ${isDefault ? "text-mint-ink/70" : "text-paper/40"}`}>{i + 1}</span>
+                    {isDefault ? (
+                      <span className="rounded-full bg-mint-ink px-2.5 py-0.5 text-xs font-semibold text-mint">{t.defaultLabel}</span>
+                    ) : (
+                      <StatusBadge status={level.status} labels={status} dark />
+                    )}
                   </div>
-                  <span className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${stateStyle[row.state]}`}>
-                    {t.states[row.state as keyof typeof t.states]}
-                  </span>
+                  <span className="font-bold leading-snug">{level.name}</span>
+                  {i < t.levels.length - 1 && (
+                    <FlowArrow className="absolute -end-3.5 top-1/2 z-10 hidden h-5 w-5 -translate-y-1/2 text-paper/30 lg:block" />
+                  )}
                 </li>
-              ))}
-            </ul>
-          </Reveal>
-        </div>
+              );
+            })}
+          </ol>
+        </Reveal>
+
+        <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {t.points.map((p, i) => (
+            <Reveal as="li" key={p.title} delay={(i % 3) * 80} className="rounded-2xl border border-night-line bg-night-2/60 p-5">
+              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-mint/15 text-mint">
+                <Icon name={p.icon} className="h-5 w-5" />
+              </span>
+              <h3 className="mt-4 font-bold text-paper">{p.title}</h3>
+              <p className="mt-1.5 text-[0.95rem] leading-relaxed text-paper/70">{p.body}</p>
+            </Reveal>
+          ))}
+        </ul>
       </div>
     </section>
   );
 }
 
-export function Roadmap({ t, status }: { t: Dictionary["roadmap"]; status: StatusLabels }) {
+export function Future({ t, status }: { t: Dictionary["future"]; status: StatusLabels }) {
   return (
-    <section id="roadmap" className="bg-paper-2/60 py-20 sm:py-28">
+    <section id="future" className="py-20 sm:py-28">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
-          <SectionHeader eyebrow={t.eyebrow} title={t.title} />
+          <SectionHeader eyebrow={t.eyebrow} title={t.titleA} titleB={t.titleB} sub={t.sub} />
         </Reveal>
-        <div className="mt-12 grid gap-4 md:grid-cols-3">
-          {t.columns.map((col, i) => {
-            const live = col.status === "live";
-            return (
-              <Reveal
-                key={col.title}
-                delay={i * 120}
-                className={`rounded-3xl p-6 sm:p-7 ${
-                  live
-                    ? "bg-night text-paper"
-                    : col.status === "dev"
-                      ? "border border-line bg-paper"
-                      : "border border-dashed border-ink/25 bg-paper/50"
-                }`}
-              >
-                <div className="flex items-center justify-between gap-2">
-                  <h3 className={`text-xl font-bold ${live ? "text-paper" : "text-ink"}`}>{col.title}</h3>
-                  <StatusBadge status={col.status} labels={status} dark={live} />
-                </div>
-                <ul className="mt-5 flex flex-col gap-2.5">
-                  {col.items.map((item) => (
-                    <li key={item} className={`flex items-start gap-2.5 ${live ? "text-paper/90" : "text-ink-soft"}`}>
-                      {live ? (
-                        <Check className="mt-1 h-4 w-4 shrink-0 text-mint" />
-                      ) : (
-                        <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-ink/30" aria-hidden="true" />
-                      )}
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </Reveal>
-            );
-          })}
-        </div>
+        <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          {t.items.map((item, i) => (
+            <Reveal
+              as="li"
+              key={item.title}
+              delay={i * 70}
+              className={`flex flex-col rounded-2xl p-5 ${
+                item.status === "dev" ? "border border-line bg-white/70" : "border border-dashed border-ink/20 bg-paper/60"
+              }`}
+            >
+              <div className="flex items-center justify-between gap-2">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-ink text-mint">
+                  <Icon name={item.icon} className="h-5 w-5" />
+                </span>
+                <StatusBadge status={item.status} labels={status} />
+              </div>
+              <h3 className="mt-4 text-lg font-bold text-ink">{item.title}</h3>
+              <p className="mt-1.5 text-[0.95rem] leading-relaxed text-ink-soft">{item.body}</p>
+            </Reveal>
+          ))}
+        </ul>
       </div>
     </section>
   );
@@ -258,13 +216,9 @@ export function PreCta({ t }: { t: Dictionary["preCta"] }) {
       <Reveal className="mx-auto max-w-3xl px-4 text-center sm:px-6">
         <h2 className="text-[1.9rem] font-extrabold leading-[1.2] tracking-tight text-ink sm:text-[2.6rem]">{t.title}</h2>
         <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-ink-soft">{t.sub}</p>
-        <a
-          href="#demo"
-          className="mt-9 inline-flex rounded-full bg-mint px-8 py-4 text-lg font-bold text-mint-ink shadow-[0_10px_30px_-10px_rgba(20,184,166,0.8)] transition-colors hover:bg-[#5eead4]"
-        >
+        <a href="#demo" data-track="demo_cta_clicked" data-track-location="pre_form" className={`mt-9 ${ctaClass} px-8 py-4 text-lg`}>
           {t.cta}
         </a>
-        <p className="mt-4 text-sm text-ink-soft">{t.secondary}</p>
       </Reveal>
     </section>
   );

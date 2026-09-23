@@ -46,14 +46,34 @@ export function ExecutionFlow({ t }: { t: Dictionary["flow"] }) {
   }, [t.steps.length]);
 
   return (
-    <section className="bg-night py-20 text-paper sm:py-28">
+    <section id="how" className="bg-night py-20 text-paper sm:py-28">
       <div className="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
         <div className="lg:sticky lg:top-28 lg:self-start">
           <SectionHeader eyebrow={t.eyebrow} title={t.titleA} titleB={t.titleB} dark />
-          <div className="mt-8 inline-block rounded-2xl rounded-se-md bg-mint px-5 py-3 text-lg font-semibold text-mint-ink">
-            {t.request}
+
+          {/* The idea in one contrast: instructions you'd have to give vs. the single sentence you actually say. */}
+          <div className="mt-8 rounded-2xl border border-night-line bg-night-2/60 p-5">
+            <p className="font-bold text-paper">{t.goal}</p>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              <div>
+                <p className="text-xs font-semibold text-paper/45">{t.insteadLabel}</p>
+                <ol className="mt-2 flex flex-col gap-1.5 text-[0.95rem] text-paper/45">
+                  {t.instead.map((line) => (
+                    <li key={line} className="line-through decoration-paper/30">
+                      {line}
+                    </li>
+                  ))}
+                </ol>
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-mint">{t.sayLabel}</p>
+                <p className="mt-2 inline-block rounded-2xl rounded-se-md bg-mint px-4 py-2.5 text-lg font-semibold text-mint-ink">
+                  {t.request}
+                </p>
+              </div>
+            </div>
           </div>
-          <p className="mt-6 max-w-md leading-relaxed text-paper/60">{t.note}</p>
+          <p className="mt-6 max-w-md text-[0.95rem] leading-relaxed text-paper/60">{t.note}</p>
         </div>
 
         <ol ref={ref} className="relative flex flex-col">

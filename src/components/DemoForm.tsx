@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import type { Dictionary, Locale } from "@/i18n/dictionaries";
+import { getUtm, track } from "@/lib/track";
 import { SectionHeader } from "./Section";
 
 type Status = "idle" | "sending" | "sent" | "error" | "invalid" | "mailto" | "offline";
@@ -16,6 +17,13 @@ const PHONE = /^\+?[\d\s\-()]{9,}$/;
 
 export function DemoForm({ t, locale }: { t: Dictionary["form"]; locale: Locale }) {
   const [status, setStatus] = useState<Status>("idle");
+  const started = useRef(false);
+
+  const onStart = () => {
+    if (started.current) return;
+    started.current = true;
+    track("lead_form_started");
+  };
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -25,25 +33,32 @@ export function DemoForm({ t, locale }: { t: Dictionary["form"]; locale: Locale 
       setStatus("invalid");
       return;
     }
+    const utm = getUtm();
+    const hasNeed = data.need?.trim() ? "yes" : "no";
+
     if (STATIC_EXPORT) {
       if (!DEMO_EMAIL) {
         setStatus("offline");
         return;
       }
-      const body = [data.name, data.business ?? "", data.email, data.phone, "", data.need ?? ""].join("\n");
+      const campaign = Object.entries(utm).map(([k, v]) => `${k}: ${v}`);
+      const body = [data.need ?? "", "", data.name, data.business ?? "", data.email, data.phone, ...campaign].join("\n");
       window.location.href = `mailto:${DEMO_EMAIL}?subject=${encodeURIComponent(`OpsQ demo: ${data.business || data.name}`)}&body=${encodeURIComponent(body)}`;
+      track("lead_form_submitted", { channel: "mailto", has_need: hasNeed });
       setStatus("mailto");
       return;
     }
+
     setStatus("sending");
     try {
       const res = await fetch("/api/demo", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ ...data, locale }),
+        body: JSON.stringify({ ...data, ...utm, locale }),
       });
       if (!res.ok) throw new Error(String(res.status));
       form.reset();
+      track("lead_form_submitted", { channel: "api", has_need: hasNeed });
       setStatus("sent");
     } catch {
       setStatus("error");
@@ -51,40 +66,46 @@ export function DemoForm({ t, locale }: { t: Dictionary["form"]; locale: Locale 
   }
 
   const field =
-    "mt-1.5 w-full rounded-xl border border-line bg-paper px-4 py-3 text-ink placeholder:text-ink-mute/70 focus:border-mint-deep focus:outline-none focus:ring-2 focus:ring-mint/40";
+    "mt-1.5 w-full rounded-xl border border-line bg-paper px-4 py-3 text-base text-ink placeholder:text-ink-mute/70 focus:border-mint-deep focus:outline-none focus:ring-2 focus:ring-mint/40";
 
   return (
     <section id="demo" className="bg-night py-20 sm:py-28">
-      <div className="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_1.1fr]">
+      <div className="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_1.2fr]">
         <SectionHeader eyebrow={t.eyebrow} title={t.title} sub={t.sub} dark />
 
-        <div className="rounded-3xl bg-paper p-6 sm:p-8">
+        <div className="rounded-3xl bg-paper p-5 sm:p-8">
           {status === "sent" ? (
             <div role="status" className="flex min-h-[20rem] flex-col items-center justify-center gap-4 text-center">
               <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-mint text-2xl text-mint-ink">✓</span>
-              <p className="text-xl font-bold text-ink">{t.success}</p>
+              <p className="max-w-sm text-xl font-bold text-ink">{t.success}</p>
             </div>
           ) : (
-            <form onSubmit={onSubmit} noValidate className="grid gap-5 sm:grid-cols-2">
+            <form onSubmit={onSubmit} onFocus={onStart} noValidate className="grid gap-5 sm:grid-cols-2">
+              {/* The question that matters most comes first: it qualifies the lead and tells us what to build. */}
+              <label className="block rounded-2xl bg-mint-soft/60 p-4 text-base font-bold text-ink sm:col-span-2">
+                {t.need} <span className="text-sm font-normal text-ink-mute">({t.optional})</span>
+                <textarea
+                  name="need"
+                  rows={4}
+                  placeholder={t.needHint}
+                  className={`${field} border-mint-deep/30 bg-white leading-relaxed`}
+                />
+              </label>
               <label className="block text-sm font-semibold text-ink">
                 {t.name}
                 <input name="name" autoComplete="name" required className={field} />
               </label>
               <label className="block text-sm font-semibold text-ink">
-                {t.business} <span className="font-normal text-ink-mute">({t.optional})</span>
-                <input name="business" autoComplete="organization" className={field} />
+                {t.phone}
+                <input name="phone" type="tel" inputMode="tel" autoComplete="tel" required dir="ltr" className={field} />
               </label>
               <label className="block text-sm font-semibold text-ink">
                 {t.email}
-                <input name="email" type="email" autoComplete="email" required dir="ltr" className={field} />
+                <input name="email" type="email" inputMode="email" autoComplete="email" required dir="ltr" className={field} />
               </label>
               <label className="block text-sm font-semibold text-ink">
-                {t.phone}
-                <input name="phone" type="tel" autoComplete="tel" required dir="ltr" className={field} />
-              </label>
-              <label className="block text-sm font-semibold text-ink sm:col-span-2">
-                {t.need} <span className="font-normal text-ink-mute">({t.optional})</span>
-                <textarea name="need" rows={4} placeholder={t.needHint} className={field} />
+                {t.business} <span className="font-normal text-ink-mute">({t.optional})</span>
+                <input name="business" autoComplete="organization" className={field} />
               </label>
               {/* Honeypot: hidden from people, filled in by bots. */}
               <input name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
@@ -103,7 +124,7 @@ export function DemoForm({ t, locale }: { t: Dictionary["form"]; locale: Locale 
                 <button
                   type="submit"
                   disabled={status === "sending"}
-                  className="w-full rounded-full bg-mint px-7 py-3.5 text-base font-bold text-mint-ink transition-colors hover:bg-[#5eead4] disabled:opacity-60 sm:w-auto"
+                  className="w-full rounded-full bg-mint px-8 py-4 text-lg font-bold text-mint-ink transition-colors hover:bg-[#5eead4] disabled:opacity-60 sm:w-auto"
                 >
                   {status === "sending" ? t.sending : t.submit}
                 </button>

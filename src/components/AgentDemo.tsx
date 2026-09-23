@@ -193,7 +193,7 @@ export function AgentDemo({ t }: { t: Dictionary["demo"] }) {
                   <span className={`flex-1 truncate transition-colors ${done ? "text-paper" : active ? "text-paper/90" : "text-paper/35"}`}>
                     {done ? s.done : s.run}
                   </span>
-                  <span className="ltr hidden shrink-0 rounded-md border border-night-line bg-night px-2 py-0.5 font-mono text-[0.68rem] text-paper/55 sm:inline">
+                  <span className="ltr hidden shrink-0 rounded-md border border-night-line bg-night px-2 py-0.5 font-mono text-[0.72rem] text-paper/55 sm:inline">
                     {s.tool}
                   </span>
                 </li>
@@ -220,7 +220,7 @@ export function AgentDemo({ t }: { t: Dictionary["demo"] }) {
               <span className={`text-xs font-semibold ${approved ? "text-mint" : "text-paper/80"}`}>
                 {approved ? `✓ ${t.approved}` : t.pending}
               </span>
-              <span className="ltr font-mono text-[0.68rem] text-paper/50">calendar.create</span>
+              <span className="ltr font-mono text-[0.72rem] text-paper/50">calendar.create</span>
             </div>
             <div className="mt-2 flex items-center justify-between gap-3">
               <div>
@@ -282,7 +282,7 @@ export function AgentDemo({ t }: { t: Dictionary["demo"] }) {
           ].map((m, i) => (
             <div key={m.label} className={`px-2 py-2.5 ${i > 0 ? "border-s border-night-line" : ""}`}>
               <div className="ltr font-mono text-sm font-semibold tabular-nums text-paper">{m.value}</div>
-              <div className="text-[0.7rem] text-paper/45">{m.label}</div>
+              <div className="text-[0.72rem] text-paper/45">{m.label}</div>
             </div>
           ))}
         </div>
