@@ -57,7 +57,7 @@ const he = {
     steps: [
       { tool: "gmail.search", label: "נמצא מייל ממשה" },
       { tool: "gmail.read", label: "נקרא" },
-      { tool: "AI", label: "סוכם" },
+      { tool: "claude", label: "סוכם" },
       { tool: "calendar.list", label: "פנוי מחר ב-15:00" },
     ],
     summary: "משה שלח את החוזה אתמול. הוא מבקש לסגור עד סוף השבוע, ויש לו שאלה אחת על מועד התשלום.",
@@ -234,7 +234,7 @@ const he = {
   future: {
     eyebrow: "הצעד הבא",
     title: "זה רק ההתחלה.",
-    sub: "OpsQ נבנה כדי להפוך מעוזר AI לעובד דיגיטלי שמבצע עבודה בעולם האמיתי. כל יכולת כאן מסומנת לפי המצב האמיתי שלה.",
+    sub: "OpsQ נבנה כדי לגדול מעוזר לעובד דיגיטלי מלא, שמבצע עבודה בעולם האמיתי. כל יכולת כאן מסומנת לפי המצב האמיתי שלה.",
     whatsapp: {
       title: "עובד שחי גם ב-WhatsApp",
       body: "לסוכן יהיה מספר WhatsApp משלו. שומרים אותו כאיש קשר, ומדברים איתו כמו עם עובד.",
@@ -245,7 +245,7 @@ const he = {
     },
     phone: {
       title: "הוא גם יוכל להרים טלפון.",
-      body: "OpsQ נבנה כדי לבצע שיחות אמיתיות בשם העסק: לברר, לתאם, לקבוע ולעדכן. בתחילת כל שיחה הוא מציג את עצמו כעוזר AI.",
+      body: "OpsQ נבנה כדי לבצע שיחות אמיתיות בשם העסק: לברר, לתאם, לקבוע ולעדכן. בתחילת כל שיחה הוא מציג את עצמו כעובד דיגיטלי, לא כאדם.",
       examples: [
         "״תתקשר למוסך ותבדוק מתי יש תור.״",
         "״תתקשר לחנות החיות ותבדוק אם האוכל הקבוע במלאי.״",
@@ -375,7 +375,7 @@ const he = {
       },
       {
         q: "הוא יוכל לבצע שיחות טלפון?",
-        a: "זה בפיתוח ועוד לא זמין. הכוונה היא שיחות קצרות לבירור ותיאום, שבתחילתן הוא מציג את עצמו כעוזר AI, ובסופן מגיע אליך סיכום.",
+        a: "זה בפיתוח ועוד לא זמין. הכוונה היא שיחות קצרות לבירור ותיאום, שבתחילתן הוא מציג את עצמו כעובד דיגיטלי, ובסופן מגיע אליך סיכום.",
       },
       {
         q: "הוא יוכל לבצע פעולות באתרים?",
@@ -441,7 +441,7 @@ const en: Dictionary = {
     steps: [
       { tool: "gmail.search", label: "Found Moshe's email" },
       { tool: "gmail.read", label: "Read" },
-      { tool: "AI", label: "Summarized" },
+      { tool: "claude", label: "Summarized" },
       { tool: "calendar.list", label: "Free tomorrow at 3 PM" },
     ],
     summary: "Moshe sent the contract yesterday. He wants to close by the end of the week and has one question about the payment date.",
@@ -614,7 +614,7 @@ const en: Dictionary = {
   future: {
     eyebrow: "What's next",
     title: "This is just the beginning.",
-    sub: "OpsQ is being built to grow from an AI assistant into a digital employee that does real-world work. Every capability here is labeled with its real status.",
+    sub: "OpsQ is being built to grow from an assistant into a full digital employee that does real-world work. Every capability here is labeled with its real status.",
     whatsapp: {
       title: "An employee that lives on WhatsApp too",
       body: "The agent will have its own WhatsApp number. Save it as a contact and talk to it like an employee.",
@@ -625,7 +625,7 @@ const en: Dictionary = {
     },
     phone: {
       title: "It will pick up the phone, too.",
-      body: "OpsQ is being built to make real calls on your behalf: to check, coordinate, book and update. At the start of every call it introduces itself as an AI assistant.",
+      body: "OpsQ is being built to make real calls on your behalf: to check, coordinate, book and update. At the start of every call it introduces itself as a digital employee, not a person.",
       examples: [
         "“Call the garage and check when they have a slot.”",
         "“Call the pet shop and check the usual food is in stock.”",
@@ -751,7 +751,7 @@ const en: Dictionary = {
       },
       {
         q: "Will it make phone calls?",
-        a: "It's in development and not available yet. The idea is short calls to check and coordinate, where it introduces itself as an AI assistant and sends you a summary afterwards.",
+        a: "It's in development and not available yet. The idea is short calls to check and coordinate, where it introduces itself as a digital employee and sends you a summary afterwards.",
       },
       {
         q: "Will it take actions on websites?",
