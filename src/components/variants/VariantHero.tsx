@@ -97,7 +97,7 @@ export function VariantHero({ v, index, tag = "כיוון" }: { v: Variant; inde
           <div className="rounded-3xl border border-[var(--line)] bg-[var(--card)] p-5 text-[var(--card-fg)] shadow-[0_24px_60px_-24px_rgba(0,0,0,0.45)]">
             <div className="flex flex-col gap-3 text-[0.93rem]">
               <div className="max-w-[85%] self-end rounded-2xl rounded-se-md bg-[image:var(--accent-bg)] bg-[var(--accent)] px-4 py-2.5 text-[var(--accent-text)]">
-                תקבע פגישה עם משה כהן מחר ב-15:00
+                תקבע פגישה עם יותם כהן מחר ב-15:00
               </div>
               <div className="max-w-[90%] self-start rounded-2xl rounded-ss-md border border-[var(--line)] px-4 py-2.5">
                 מחר ב-15:00 פנוי. להוסיף את הפגישה ליומן?
@@ -105,7 +105,7 @@ export function VariantHero({ v, index, tag = "כיוון" }: { v: Variant; inde
               <div className="self-start rounded-2xl border border-[var(--accent)] p-4" style={{ width: "92%" }}>
                 <div className="text-xs font-semibold text-[var(--accent)]">ממתין לאישור</div>
                 <div className="mt-1.5 font-medium">יצירת אירוע ביומן</div>
-                <div className="mt-0.5 text-sm opacity-70">פגישה עם משה כהן · מחר, 15:00–16:00</div>
+                <div className="mt-0.5 text-sm opacity-70">פגישה עם יותם כהן · מחר, 15:00–16:00</div>
                 <div className="mt-3 flex gap-2">
                   <span className="rounded-lg bg-[var(--ok)] px-4 py-1.5 text-sm font-medium" style={{ color: p.okText ?? "#ffffff" }}>אישור</span>
                   <span className="rounded-lg border border-[var(--line)] px-4 py-1.5 text-sm opacity-80">דחייה</span>
