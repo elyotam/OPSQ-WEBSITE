@@ -8,7 +8,8 @@ import { DemoForm } from "@/components/DemoForm";
 import { ExecutionFlow } from "@/components/ExecutionFlow";
 import { Hero } from "@/components/Hero";
 import { Nav } from "@/components/Nav";
-import { Capabilities, Control, Faq, Footer, Future, Icp, Pain, PreCta } from "@/components/Sections";
+import { Control, Faq, Footer, Future, Icp, Pain, PreCta, SocialProof } from "@/components/Sections";
+import { StickyCta } from "@/components/StickyCta";
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -41,14 +42,14 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Nav t={t.nav} locale={locale} />
       <main>
-        {/* What is it → why care → it really works → how → what today → is it for me →
-            can I trust it → what's next → what would you hand over → lead → objections */}
+        {/* What is it + proof it works today → why care → how it differs → how it works →
+            is it for me → can I trust it → what's next → what would you hand over → lead → objections */}
         <Hero t={t.hero} proof={t.proof} demo={t.demo} status={t.status} oneLine={locale === "he"} />
         <Pain t={t.pain} />
         <CategoryCompare t={t.category} />
         <ExecutionFlow t={t.flow} />
-        <Capabilities t={t.capabilities} status={t.status} />
         <Icp t={t.icp} />
+        <SocialProof t={t.socialProof} />
         <Control t={t.control} status={t.status} />
         <Future t={t.future} status={t.status} />
         <PreCta t={t.preCta} />
@@ -56,6 +57,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         <Faq t={t.faq} />
       </main>
       <Footer t={t.footer} />
+      <StickyCta label={t.form.sticky} />
       <AccessibilityWidget t={t.a11y} dir={dir[locale]} />
       <Analytics />
     </>

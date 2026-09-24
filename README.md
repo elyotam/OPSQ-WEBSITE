@@ -39,7 +39,13 @@ Without them the form reports an error instead of pretending it sent.
 
 A static export can't run server code, so the workflow first removes the API route, the middleware and the internal `/variants` brand pages. The site's root serves the Hebrew page directly.
 
-In the static copy, the form opens the visitor's email app, addressed to the repository variable `DEMO_EMAIL`. When that variable isn't set, the form says it isn't connected yet.
+Leads from the static copy are sent in this order of preference:
+
+1. `LEAD_ENDPOINT` (repository variable): a form service such as Formspree or Web3Forms, which stores and emails each lead. This is the reliable option. Add `LEAD_ACCESS_KEY` if the service needs one.
+2. `DEMO_EMAIL`: the form opens the visitor's email app with the details filled in.
+3. Neither set: the form says it isn't connected, and never shows a false success.
+
+Every lead carries any `utm_source`, `utm_medium` and `utm_campaign` values from the visit.
 
 ## Copy rule
 

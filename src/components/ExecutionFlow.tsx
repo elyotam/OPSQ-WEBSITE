@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { prefersReducedMotion } from "@/lib/a11y";
-import { Check } from "./Icon";
+import { track } from "@/lib/track";
+import { Check, Icon } from "./Icon";
 import { SectionHeader } from "./Section";
 
 const STEP_MS = 420;
@@ -12,42 +13,55 @@ const STEP_MS = 420;
 export function ExecutionFlow({ t }: { t: Dictionary["flow"] }) {
   const ref = useRef<HTMLOListElement>(null);
   const [active, setActive] = useState(-1);
+  const [inView, setInView] = useState(false);
+  const [run, setRun] = useState(0);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const total = t.steps.length;
-    if (prefersReducedMotion() || !("IntersectionObserver" in window)) {
-      setActive(total - 1);
+    if (!("IntersectionObserver" in window)) {
+      setInView(true);
       return;
     }
-    let timer: ReturnType<typeof setInterval> | undefined;
     const io = new IntersectionObserver(
       ([entry]) => {
-        if (!entry.isIntersecting) return;
-        io.disconnect();
-        timer = setInterval(() => {
-          setActive((a) => {
-            if (a >= total - 1) {
-              clearInterval(timer);
-              return a;
-            }
-            return a + 1;
-          });
-        }, STEP_MS);
+        if (entry.isIntersecting) {
+          setInView(true);
+          io.disconnect();
+        }
       },
       { threshold: 0.25 },
     );
     io.observe(el);
-    return () => {
-      io.disconnect();
-      clearInterval(timer);
-    };
-  }, [t.steps.length]);
+    return () => io.disconnect();
+  }, []);
+
+  // Light the steps one by one; "run" restarts it (the replay button).
+  useEffect(() => {
+    if (!inView) return;
+    const total = t.steps.length;
+    if (prefersReducedMotion()) {
+      setActive(total - 1);
+      return;
+    }
+    setActive(-1);
+    const timer = setInterval(() => {
+      setActive((a) => {
+        if (a >= total - 1) {
+          clearInterval(timer);
+          return a;
+        }
+        return a + 1;
+      });
+    }, STEP_MS);
+    return () => clearInterval(timer);
+  }, [inView, run, t.steps.length]);
+
+  const finished = active >= t.steps.length - 1;
 
   return (
     <section id="how" className="bg-night py-20 text-paper sm:py-28">
-      <div className="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
+      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-12 px-4 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-16">
         <div className="lg:sticky lg:top-28 lg:self-start">
           <SectionHeader eyebrow={t.eyebrow} title={t.titleA} titleB={t.titleB} dark />
 
@@ -76,7 +90,26 @@ export function ExecutionFlow({ t }: { t: Dictionary["flow"] }) {
           <p className="mt-6 max-w-md text-[0.95rem] leading-relaxed text-paper/60">{t.note}</p>
         </div>
 
-        <ol ref={ref} className="relative flex flex-col">
+        <div className="min-w-0 rounded-3xl border border-night-line bg-night-2/40 p-4 sm:p-6">
+          <div className="mb-5 flex items-center justify-between gap-3 border-b border-night-line pb-4">
+            <div className="flex min-w-0 items-center gap-2 text-sm">
+              <span className={`h-2 w-2 shrink-0 rounded-full bg-mint ${finished ? "" : "animate-pulse"}`} aria-hidden="true" />
+              <span className="font-semibold text-paper">{t.logTitle}</span>
+              <span className="truncate text-paper/45">· {t.request}</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                setRun((r) => r + 1);
+                track("proof_interaction", { location: "execution_flow_replay" });
+              }}
+              className="flex shrink-0 items-center gap-1.5 rounded-full border border-night-line px-3 py-1.5 text-xs font-semibold text-paper/80 transition-colors hover:border-mint/50 hover:text-paper"
+            >
+              <Icon name="repeat" className="h-3.5 w-3.5" />
+              {t.replay}
+            </button>
+          </div>
+        <ol ref={ref} className="relative flex flex-col" aria-live="off">
           {t.steps.map((step, i) => {
             const on = i <= active;
             const last = i === t.steps.length - 1;
@@ -117,6 +150,7 @@ export function ExecutionFlow({ t }: { t: Dictionary["flow"] }) {
             );
           })}
         </ol>
+        </div>
       </div>
     </section>
   );

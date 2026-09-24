@@ -7,9 +7,16 @@ import { SectionHeader } from "./Section";
 
 type Status = "idle" | "sending" | "sent" | "error" | "invalid" | "mailto" | "offline";
 
-// The GitHub Pages build has no server, so the form hands off to the visitor's email app instead.
+// Where a lead goes, in order of preference:
+// 1. NEXT_PUBLIC_LEAD_ENDPOINT: a form service (Formspree, Web3Forms, …) that stores and emails it.
+//    Works on the static GitHub Pages build. NEXT_PUBLIC_LEAD_ACCESS_KEY is sent along if the service needs one.
+// 2. /api/demo on the server build (SMTP_URL + DEMO_INBOX).
+// 3. On the static build without an endpoint: the visitor's email app, addressed to NEXT_PUBLIC_DEMO_EMAIL.
+// With none of these configured the form says so. It never shows success for a lead that went nowhere.
 const STATIC_EXPORT = process.env.NEXT_PUBLIC_STATIC_EXPORT === "1";
 const DEMO_EMAIL = process.env.NEXT_PUBLIC_DEMO_EMAIL ?? "";
+const LEAD_ENDPOINT = process.env.NEXT_PUBLIC_LEAD_ENDPOINT ?? "";
+const LEAD_ACCESS_KEY = process.env.NEXT_PUBLIC_LEAD_ACCESS_KEY ?? "";
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // At least 9 digits, allowing spaces, dashes, brackets and a leading +.
@@ -27,6 +34,7 @@ export function DemoForm({ t, locale }: { t: Dictionary["form"]; locale: Locale 
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (status === "sending") return; // no double submits while a request is in flight
     const form = event.currentTarget;
     const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
     if (!data.name?.trim() || !EMAIL.test(data.email ?? "") || !PHONE.test(data.phone ?? "")) {
@@ -35,6 +43,34 @@ export function DemoForm({ t, locale }: { t: Dictionary["form"]; locale: Locale 
     }
     const utm = getUtm();
     const hasNeed = data.need?.trim() ? "yes" : "no";
+
+    if (LEAD_ENDPOINT) {
+      setStatus("sending");
+      try {
+        const res = await fetch(LEAD_ENDPOINT, {
+          method: "POST",
+          headers: { "content-type": "application/json", accept: "application/json" },
+          body: JSON.stringify({
+            ...(LEAD_ACCESS_KEY && { access_key: LEAD_ACCESS_KEY }),
+            subject: `OpsQ demo: ${data.business || data.name}`,
+            name: data.name,
+            email: data.email,
+            phone: data.phone,
+            business: data.business ?? "",
+            need: data.need ?? "",
+            locale,
+            ...utm,
+          }),
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        track("lead_form_submitted", { channel: "endpoint", has_need: hasNeed });
+        setStatus("sent");
+      } catch {
+        setStatus("error");
+      }
+      return;
+    }
 
     if (STATIC_EXPORT) {
       if (!DEMO_EMAIL) {

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { prefersReducedMotion } from "@/lib/a11y";
+import { track } from "@/lib/track";
 import { Check, Icon } from "./Icon";
 import { LogoMark } from "./Logo";
 import { Reveal } from "./Reveal";
@@ -74,6 +75,7 @@ export function CategoryCompare({ t }: { t: Dictionary["category"] }) {
                 onClick={() => {
                   setPinned(true);
                   setTab(i);
+                  track("proof_interaction", { location: "chatbot_compare", tab: e.tab });
                 }}
                 className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
                   i === tab ? "bg-ink text-paper" : "text-ink-soft hover:text-ink"

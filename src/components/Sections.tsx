@@ -17,13 +17,13 @@ export function Pain({ t }: { t: Dictionary["pain"] }) {
         <Reveal>
           <h2 className="max-w-3xl text-[1.75rem] font-extrabold leading-[1.2] tracking-tight text-ink sm:text-[2.4rem]">{t.title}</h2>
         </Reveal>
-        <ul className="mt-10 grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="mt-10 grid grid-cols-2 gap-2.5 lg:grid-cols-4">
           {t.items.map((item, i) => (
             <Reveal
               as="li"
               key={item}
               delay={(i % 4) * 60}
-              className="flex items-center gap-3 rounded-2xl border border-line bg-paper px-4 py-3.5 text-[0.98rem] text-ink-soft"
+              className="flex items-center gap-2.5 rounded-2xl border border-line bg-paper px-3.5 py-3 text-[0.95rem] leading-snug text-ink-soft sm:gap-3 sm:px-4 sm:py-3.5 sm:text-[0.98rem]"
             >
               <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-ink/25" aria-hidden="true" />
               {item}
@@ -36,47 +36,6 @@ export function Pain({ t }: { t: Dictionary["pain"] }) {
             {t.close}
           </p>
         </Reveal>
-      </div>
-    </section>
-  );
-}
-
-export function Capabilities({ t, status }: { t: Dictionary["capabilities"]; status: StatusLabels }) {
-  // 3 + 2 layout on large screens: the first three span 2 of 6 columns, the last two span 3.
-  const span = ["lg:col-span-2", "lg:col-span-2", "lg:col-span-2", "lg:col-span-3", "lg:col-span-3"];
-  return (
-    <section id="today" className="py-20 sm:py-28">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <Reveal>
-          <SectionHeader eyebrow={t.eyebrow} title={t.title} sub={t.sub} />
-        </Reveal>
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
-          {t.items.map((item, i) => {
-            const feature = i === t.items.length - 1;
-            return (
-              <Reveal
-                key={item.title}
-                delay={(i % 3) * 80}
-                className={`flex flex-col rounded-2xl p-6 ${span[i] ?? ""} ${
-                  feature ? "bg-night text-paper sm:col-span-2" : "border border-line bg-white/70"
-                }`}
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <span
-                    className={`flex h-11 w-11 items-center justify-center rounded-xl ${
-                      feature ? "bg-mint text-mint-ink" : "bg-mint-soft text-mint-ink"
-                    }`}
-                  >
-                    <Icon name={item.icon} className="h-5 w-5" />
-                  </span>
-                  <StatusBadge status="live" labels={status} dark={feature} />
-                </div>
-                <h3 className={`mt-4 text-xl font-bold ${feature ? "text-paper" : "text-ink"}`}>{item.title}</h3>
-                <p className={`mt-1.5 leading-relaxed ${feature ? "text-paper/75" : "text-ink-soft"}`}>{item.body}</p>
-              </Reveal>
-            );
-          })}
-        </div>
       </div>
     </section>
   );
@@ -117,6 +76,35 @@ export function Icp({ t }: { t: Dictionary["icp"] }) {
             {t.cta}
           </a>
         </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Real customer proof. Renders nothing until dictionaries hold real quotes: no placeholders, no
+ * invented names. Add { quote, name, role, company, result? } items to socialProof.items to show it.
+ */
+export function SocialProof({ t }: { t: Dictionary["socialProof"] }) {
+  if (!t.items.length) return null;
+  return (
+    <section className="py-20 sm:py-28">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <Reveal>
+          <SectionHeader eyebrow={t.eyebrow} title={t.title} />
+        </Reveal>
+        <ul className="mt-12 grid gap-4 md:grid-cols-2">
+          {t.items.map((item) => (
+            <Reveal as="li" key={item.name} className="flex flex-col rounded-2xl border border-line bg-white/70 p-6">
+              {item.result && <p className="text-2xl font-extrabold text-mint-deep">{item.result}</p>}
+              <blockquote className="mt-3 flex-1 text-lg leading-relaxed text-ink">״{item.quote}״</blockquote>
+              <p className="mt-5 text-sm font-semibold text-ink">
+                {item.name}
+                <span className="font-normal text-ink-mute"> · {item.role}, {item.company}</span>
+              </p>
+            </Reveal>
+          ))}
+        </ul>
       </div>
     </section>
   );
@@ -184,13 +172,13 @@ export function Future({ t, status }: { t: Dictionary["future"]; status: StatusL
         <Reveal>
           <SectionHeader eyebrow={t.eyebrow} title={t.titleA} titleB={t.titleB} sub={t.sub} />
         </Reveal>
-        <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <ul className="-mx-4 mt-10 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:mt-12 sm:grid sm:grid-cols-2 sm:gap-4 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-5">
           {t.items.map((item, i) => (
             <Reveal
               as="li"
               key={item.title}
               delay={i * 70}
-              className={`flex flex-col rounded-2xl p-5 ${
+              className={`flex w-[78%] shrink-0 snap-start flex-col rounded-2xl p-5 sm:w-auto ${
                 item.status === "dev" ? "border border-line bg-white/70" : "border border-dashed border-ink/20 bg-paper/60"
               }`}
             >

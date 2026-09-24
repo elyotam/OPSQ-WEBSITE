@@ -4,7 +4,9 @@
 
 export type TrackEvent =
   | "hero_cta_clicked"
+  | "secondary_cta_clicked"
   | "demo_cta_clicked"
+  | "proof_interaction"
   | "how_it_works_clicked"
   | "lead_form_started"
   | "lead_form_submitted"
