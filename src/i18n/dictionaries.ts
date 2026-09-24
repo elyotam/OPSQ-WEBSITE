@@ -196,7 +196,7 @@ const he = {
       },
       {
         icon: "send",
-        title: "מכירות",
+        title: "צוותי מכירות",
         who: "עסקים שחיים מפגישות ולידים",
         problem: "פגישות שלא נקבעו ו-follow-up שנשכח.",
         solve: "קובע פגישות ומנסח follow-up במייל.",
@@ -546,7 +546,7 @@ const en: Dictionary = {
       },
       {
         icon: "send",
-        title: "Sales",
+        title: "Sales teams",
         who: "Businesses that live on meetings and leads",
         problem: "Meetings not booked and follow-ups forgotten.",
         solve: "Books meetings and drafts follow-ups by email.",
