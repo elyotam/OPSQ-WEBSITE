@@ -12,6 +12,7 @@ import { LogoMark } from "./Logo";
 const TIMELINE = [500, 2300, 850, 750, 1050, 800, 2100, 700, 1000, 400, 1500, 4200];
 const LAST = TIMELINE.length - 1;
 const FIRST_TOOL = 2;
+const APPROVED_STEP = 10;
 
 function useTyped(text: string, active: boolean, full: boolean, charsPerTick = 2, tickMs = 28) {
   const [n, setN] = useState(0);
@@ -41,7 +42,6 @@ function show(on: boolean) {
 
 export function AgentDemo({ t }: { t: Dictionary["demo"] }) {
   const [step, setStep] = useState(0);
-  const [elapsed, setElapsed] = useState(0);
   const [cursor, setCursor] = useState({ x: 0, y: 0, visible: false });
   const bodyRef = useRef<HTMLDivElement>(null);
   const approveRef = useRef<HTMLSpanElement>(null);
@@ -75,15 +75,6 @@ export function AgentDemo({ t }: { t: Dictionary["demo"] }) {
     return () => window.removeEventListener(A11Y_EVENT, onChange);
   }, []);
 
-  // A stopwatch that runs while the task is in progress.
-  const running = step >= 1 && step <= 9;
-  useEffect(() => {
-    if (step === 0) setElapsed(0);
-    if (!running) return;
-    const id = setInterval(() => setElapsed((e) => e + 100), 100);
-    return () => clearInterval(id);
-  }, [running, step]);
-
   // The pointer: appears near the bottom, then glides onto the approve button.
   useEffect(() => {
     if (step < 7 || step > 9) {
@@ -104,9 +95,14 @@ export function AgentDemo({ t }: { t: Dictionary["demo"] }) {
 
   const approved = step >= 10;
   const state = approved ? "done" : step >= 7 ? "waiting" : "running";
+  // Demo metrics come from the script itself, so they always match what is on screen:
+  // tools completed so far (the four lookups plus calendar.create once approved), the approval,
+  // and the scripted time up to this step. Before the first tool finishes they show "—", never 0.
   const toolsDone = Math.max(0, Math.min(t.steps.length, step - FIRST_TOOL)) + (approved ? 1 : 0);
-  const seconds = Math.floor(elapsed / 1000);
-  const clock = `00:${String(seconds).padStart(2, "0")}`;
+  const stopAt = Math.min(step, APPROVED_STEP);
+  const elapsedMs = TIMELINE.slice(1, stopAt).reduce((sum, ms) => sum + ms, 0);
+  const started = toolsDone > 0;
+  const clock = `00:${String(Math.floor(elapsedMs / 1000)).padStart(2, "0")}`;
   const progress = Math.min(1, step / (LAST - 1));
 
   return (
@@ -123,7 +119,7 @@ export function AgentDemo({ t }: { t: Dictionary["demo"] }) {
             <span className="text-sm font-semibold text-paper/90">{t.window}</span>
           </div>
           <div className="flex items-center gap-3">
-            <span className="ltr font-mono text-xs tabular-nums text-paper/50">{clock}</span>
+            <span className="ltr font-mono text-xs tabular-nums text-paper/50">{step > 0 ? clock : "00:00"}</span>
             <span
               className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold transition-colors duration-500 ${
                 state === "done"
@@ -276,9 +272,9 @@ export function AgentDemo({ t }: { t: Dictionary["demo"] }) {
         {/* Metrics */}
         <div className="grid grid-cols-3 border-t border-night-line text-center">
           {[
-            { label: t.metrics.tools, value: String(toolsDone) },
-            { label: t.metrics.approvals, value: approved ? "1" : "0" },
-            { label: t.metrics.time, value: `${(elapsed / 1000).toFixed(1)}s` },
+            { label: t.metrics.tools, value: started ? String(toolsDone) : "—" },
+            { label: t.metrics.approvals, value: approved ? "1" : started ? "0" : "—" },
+            { label: t.metrics.time, value: started ? `${(elapsedMs / 1000).toFixed(1)}s` : "—" },
           ].map((m, i) => (
             <div key={m.label} className={`px-2 py-2.5 ${i > 0 ? "border-s border-night-line" : ""}`}>
               <div className="ltr font-mono text-sm font-semibold tabular-nums text-paper">{m.value}</div>

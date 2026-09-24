@@ -42,7 +42,7 @@ const he = {
     titleB: "הוא עושה את העבודה.",
     sub: "נותנים ל-OpsQ משימה. הוא קורא, בודק, מתאם ומבצע, ומבקש אישור רק כשבאמת צריך.",
     result: ["פחות מיילים לטפל בהם.", "פחות תיאומים.", "פחות משימות שחוזרות אליך."],
-    primary: "לבדוק מה OpsQ יכול לקחת ממני",
+    primary: "לגלות מה OpsQ יכול לקחת ממני",
     secondary: "איך זה עובד",
     trust: "אישור לפני כל פעולה חשובה · סביבה פרטית לכל עסק",
   },
@@ -58,8 +58,8 @@ const he = {
       { icon: "check", name: "אישורים", system: "", body: "פעולה משמעותית מתבצעת רק אחרי אישור, ופעם אחת בלבד." },
       { icon: "list", name: "יומן פעולות", system: "", body: "כל פעולה נשמרת ומתועדת: מה נעשה, מתי ומי אישר." },
     ],
-    engine: "מופעל על ידי Claude של Anthropic. נבדק מול המערכות האמיתיות, לא בסימולציה.",
-    nextLabel: "בדרך לאותו עובד:",
+    engine: "מנוע AI אמיתי שפועל מול המערכות האמיתיות, לא בסימולציה.",
+    nextLabel: "בקרוב אצל אותו עובד:",
     next: [
       { name: "WhatsApp", status: "dev" },
       { name: "שיחות טלפון", status: "later" },
@@ -85,7 +85,7 @@ const he = {
     reject: "דחייה",
     approved: "אושר · בוצע פעם אחת",
     created: "פגישה נקבעה",
-    done: "נוסף ליומן ונרשם ביומן הפעולות.",
+    done: "נוסף ליומן ותועד בהיסטוריית הפעולות.",
     metrics: { tools: "כלים", approvals: "אישורים", time: "זמן" },
   },
   pain: {
@@ -136,6 +136,14 @@ const he = {
         opsqOutcome: "הפגישה ביומן, אחרי אישור.",
       },
     ],
+  },
+  video: {
+    eyebrow: "וידאו מוצר",
+    title: "לראות את OpsQ עובד באמת",
+    sub: "בקשה אחת. כמה פעולות. תוצאה אמיתית.",
+    play: "הפעלת הסרטון",
+    chapters: ["בקשה", "חיפוש ב-Gmail", "קריאה וסיכום", "בדיקת יומן", "בקשת אישור", "אישור", "קביעה ביומן", "המשימה הושלמה"],
+    placeholder: "וידאו מוצר אמיתי יתווסף כאן",
   },
   flow: {
     eyebrow: "איך זה עובד",
@@ -202,7 +210,7 @@ const he = {
       },
     ],
     ctaTitle: "זיהית את העסק שלך?",
-    cta: "נבדוק יחד מה אפשר להעביר",
+    cta: "לגלות מה OpsQ יכול לקחת ממני",
   },
   control: {
     eyebrow: "שליטה ואבטחה",
@@ -213,7 +221,7 @@ const he = {
     levels: [
       { name: "מציע", status: "live" },
       { name: "מבצע רק אחרי אישור", status: "live" },
-      { name: "מבצע לבד את מה שהותר", status: "live" },
+      { name: "מבצע לבד מה שאישרת מראש", status: "live" },
       { name: "מקבל אחריות במסגרת כללים", status: "later" },
     ] as { name: string; status: Status }[],
     points: [
@@ -241,7 +249,7 @@ const he = {
   preCta: {
     title: "אם היה לך עובד נוסף מחר בבוקר, מה היית רוצה שיעשה?",
     sub: "זה בדיוק מה שנרצה לשמוע. מה גוזל לך זמן? נראה מה OpsQ יכול לקחת.",
-    cta: "נראה מה אפשר להעביר",
+    cta: "לגלות מה OpsQ יכול לקחת ממני",
   },
   form: {
     eyebrow: "בקשת הדגמה",
@@ -257,11 +265,11 @@ const he = {
     submit: "בקשת הדגמה",
     sending: "שולח…",
     success: "תודה. ניצור קשר כדי להבין איזו עבודה אפשר להעביר ל-OpsQ.",
-    error: "משהו השתבש בשליחה. אפשר לנסות שוב בעוד רגע.",
+    error: "השליחה לא הצליחה, והפרטים לא נשלחו. אפשר לנסות שוב בעוד רגע.",
     invalid: "צריך למלא שם מלא, אימייל תקין ומספר טלפון.",
     privacy: "הפרטים משמשים רק כדי לחזור אליך לגבי ההדגמה.",
     mailto: "נפתח חלון מייל עם הפרטים. נשאר רק ללחוץ על שליחה.",
-    offline: "בגרסת התצוגה הזו הטופס עוד לא מחובר, והפרטים לא נשלחו.",
+    offline: "הטופס עוד לא מחובר בגרסה הזו, והפרטים לא נשלחו.",
     sticky: "בקשת הדגמה",
   },
   faq: {
@@ -270,7 +278,7 @@ const he = {
     items: [
       {
         q: "מה OpsQ באמת עושה היום?",
-        a: "עובד עם Gmail ויומן Google של העסק: מחפש, קורא ומסכם מיילים, מכין תשובות ושולח אחרי אישור, וקובע ומבטל פגישות אחרי אישור. הוא גם זוכר הקשר ומנהל אנשי קשר.",
+        a: "עובד עם Gmail ויומן Google של העסק: מחפש, קורא ומסכם מיילים, מכין תשובות ושולח אחרי אישור, וקובע ומבטל פגישות אחרי אישור. הוא גם זוכר הקשר ומנהל אנשי קשר. מאחורי הקלעים הוא פועל על מודל Claude של Anthropic.",
       },
       {
         q: "מה עדיין בפיתוח?",
@@ -384,7 +392,7 @@ const en: Dictionary = {
     titleB: "It does the work.",
     sub: "Give OpsQ a task. It reads, checks, coordinates and gets it done, and asks for approval only when it really matters.",
     result: ["Fewer emails to handle.", "Less scheduling.", "Fewer tasks bouncing back to you."],
-    primary: "Show me what OpsQ can take off my plate",
+    primary: "Discover what OpsQ can take off my plate",
     secondary: "How it works",
     trust: "Approval before every important action · A private environment per business",
   },
@@ -400,7 +408,7 @@ const en: Dictionary = {
       { icon: "check", name: "Approvals", system: "", body: "A meaningful action runs only after approval, and only once." },
       { icon: "list", name: "Activity log", system: "", body: "Every action is recorded: what was done, when, and who approved it." },
     ],
-    engine: "Powered by Claude from Anthropic. Tested against the real systems, not a simulation.",
+    engine: "A real AI engine working against the real systems, not a simulation.",
     nextLabel: "Coming to the same employee:",
     next: [
       { name: "WhatsApp", status: "dev" },
@@ -427,7 +435,7 @@ const en: Dictionary = {
     reject: "Reject",
     approved: "Approved · ran exactly once",
     created: "Meeting booked",
-    done: "Added to the calendar and logged in the activity history.",
+    done: "Added to the calendar and recorded in the activity history.",
     metrics: { tools: "Tools", approvals: "Approvals", time: "Time" },
   },
   pain: {
@@ -478,6 +486,14 @@ const en: Dictionary = {
         opsqOutcome: "On the calendar, after approval.",
       },
     ],
+  },
+  video: {
+    eyebrow: "Product video",
+    title: "See OpsQ actually working",
+    sub: "One request. Several actions. A real result.",
+    play: "Play the video",
+    chapters: ["Request", "Gmail search", "Read and summarize", "Calendar check", "Approval request", "Approval", "Booked on the calendar", "Task complete"],
+    placeholder: "A real product video will be added here",
   },
   flow: {
     eyebrow: "How it works",
@@ -544,7 +560,7 @@ const en: Dictionary = {
       },
     ],
     ctaTitle: "Recognize your business?",
-    cta: "Let's see what you could hand over",
+    cta: "Discover what OpsQ can take off my plate",
   },
   control: {
     eyebrow: "Control & security",
@@ -555,7 +571,7 @@ const en: Dictionary = {
     levels: [
       { name: "Suggests", status: "live" },
       { name: "Acts only after approval", status: "live" },
-      { name: "Runs what you allowed on its own", status: "live" },
+      { name: "Runs what you pre-approved on its own", status: "live" },
       { name: "Takes responsibility within rules", status: "later" },
     ],
     points: [
@@ -583,7 +599,7 @@ const en: Dictionary = {
   preCta: {
     title: "If you had one more employee tomorrow morning, what would you want them to do?",
     sub: "That's exactly what we want to hear. What takes your time? We'll show you what OpsQ can take over.",
-    cta: "Let's see what you can hand over",
+    cta: "Discover what OpsQ can take off my plate",
   },
   form: {
     eyebrow: "Request a demo",
@@ -599,7 +615,7 @@ const en: Dictionary = {
     submit: "Request a demo",
     sending: "Sending…",
     success: "Thank you. We'll be in touch to understand which work you could hand over to OpsQ.",
-    error: "Something went wrong while sending. Please try again in a moment.",
+    error: "Sending failed and your details were not sent. Please try again in a moment.",
     invalid: "Please fill in your full name, a valid email and a phone number.",
     privacy: "Your details are only used to get back to you about the demo.",
     mailto: "An email window opened with your details. Just press send.",
@@ -612,7 +628,7 @@ const en: Dictionary = {
     items: [
       {
         q: "What does OpsQ actually do today?",
-        a: "It works with your business's Gmail and Google Calendar: searches, reads and summarizes email, prepares replies and sends them after approval, and books and cancels meetings after approval. It also remembers context and manages contacts.",
+        a: "It works with your business's Gmail and Google Calendar: searches, reads and summarizes email, prepares replies and sends them after approval, and books and cancels meetings after approval. It also remembers context and manages contacts. Under the hood it runs on Anthropic's Claude model.",
       },
       {
         q: "What is still in development?",

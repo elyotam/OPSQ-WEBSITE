@@ -8,6 +8,7 @@ import { DemoForm } from "@/components/DemoForm";
 import { ExecutionFlow } from "@/components/ExecutionFlow";
 import { Hero } from "@/components/Hero";
 import { Nav } from "@/components/Nav";
+import { ProductVideo } from "@/components/ProductVideo";
 import { Control, Faq, Footer, Future, Icp, Pain, PreCta, SocialProof } from "@/components/Sections";
 import { StickyCta } from "@/components/StickyCta";
 
@@ -47,6 +48,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         <Hero t={t.hero} proof={t.proof} demo={t.demo} status={t.status} oneLine={locale === "he"} />
         <Pain t={t.pain} />
         <CategoryCompare t={t.category} />
+        <ProductVideo t={t.video} />
         <ExecutionFlow t={t.flow} />
         <Icp t={t.icp} />
         <SocialProof t={t.socialProof} />

@@ -53,6 +53,7 @@ export function DemoForm({ t, locale }: { t: Dictionary["form"]; locale: Locale 
           body: JSON.stringify({
             ...(LEAD_ACCESS_KEY && { access_key: LEAD_ACCESS_KEY }),
             subject: `OpsQ demo: ${data.business || data.name}`,
+            _subject: `OpsQ demo: ${data.business || data.name}`,
             name: data.name,
             email: data.email,
             phone: data.phone,
